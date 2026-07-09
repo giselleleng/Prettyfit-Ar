@@ -1,153 +1,85 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+  <title>PrettyFit AR Try On</title>
 
-<title>PrettyFit AR Try On</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: black;
+    }
 
-<style>
+    #camera {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-body{
-margin:0;
-overflow:hidden;
-font-family:Arial;
-}
+    #shoe {
+      position: fixed;
+      width: 350px;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
 
-
-#camera{
-position:fixed;
-width:100%;
-height:100%;
-object-fit:cover;
-}
-
-
-#shoe{
-position:fixed;
-width:350px;
-bottom:80px;
-left:50%;
-transform:translateX(-50%);
-z-index:10;
-}
-
-
-#text{
-position:fixed;
-top:20px;
-width:100%;
-text-align:center;
-color:white;
-font-size:22px;
-font-weight:bold;
-background:rgba(0,0,0,0.5);
-padding:10px;
-z-index:20;
-}
-
-
-</style>
-
+    #text {
+      position: fixed;
+      top: 20px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      z-index: 20;
+    }
+  </style>
 </head>
-
 
 <body>
 
+  <div id="text">PrettyFit AR Try-On 👠</div>
 
-<div id="text">
-Move your feet into frame 👠
-</div>
+  <video id="camera" autoplay playsinline></video>
 
+  <img id="shoe" alt="PrettyFit Shoe">
 
-<video 
-id="camera"
-autoplay
-playsinline>
-</video>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const selectedShoe = params.get("shoe");
 
+    const shoes = {
+      "aubree": "Aubree-Flats.png",
+      "brevia": "Brevia-Flats.png",
+      "cyllia": "Cyllia-Sneakers.png",
+      "jovina": "Jovina-Heels.png",
+      "lacey": "Lacey-Sandals.png",
+      "mona": "Mona-Loafers.png",
+      "pearlyn": "Pearlyn-Mules.png",
+      "shermaine": "Shermaine-Pumps.png",
+      "talulla": "Talulla-Sandals.png"
+    };
 
-<img id="shoe">
+    document.getElementById("shoe").src =
+      shoes[selectedShoe] || "Aubree-Flats.png";
 
-
-<script>
-
-
-const params = new URLSearchParams(window.location.search);
-
-let shoe = params.get("shoe");
-
-
-let shoes = {
-
-
-"cyllia":
-"cyllia-sneakers.png",
-
-
-"aubree":
-"aubree-flats.png",
-
-
-"lacey":
-"lacey-sandals.png",
-
-
-"talulla":
-"talulla-sandals.png",
-
-
-"jovina":
-"jovina-heels.png",
-
-
-"shermaine":
-"shermaine-pumps.png",
-
-
-"brevia":
-"brevia-flats.png",
-
-
-"mona":
-"mona-loafers.png",
-
-
-"pearlyn":
-"pearlyn-mules.png"
-
-
-};
-
-
-document.getElementById("shoe").src =
-shoes[shoe] || "aubree-flats.png";
-
-
-
-navigator.mediaDevices.getUserMedia({
-
-video:true
-
-})
-
-.then(stream=>{
-
-document.getElementById("camera").srcObject=stream;
-
-})
-
-
-.catch(()=>{
-
-alert("Please allow camera access");
-
-});
-
-
-</script>
-
+    navigator.mediaDevices.getUserMedia({
+      video: true
+    })
+    .then(function(stream) {
+      document.getElementById("camera").srcObject = stream;
+    })
+    .catch(function(error) {
+      alert("Please allow camera access to use PrettyFit AR Try-On.");
+      console.log(error);
+    });
+  </script>
 
 </body>
-
-
 </html>
