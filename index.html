@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
 <title>PrettyFit AR Try On</title>
 
 <style>
@@ -9,7 +10,9 @@
 body{
 margin:0;
 overflow:hidden;
+font-family:Arial;
 }
+
 
 #camera{
 position:fixed;
@@ -17,6 +20,7 @@ width:100%;
 height:100%;
 object-fit:cover;
 }
+
 
 #shoe{
 position:fixed;
@@ -27,19 +31,20 @@ transform:translateX(-50%);
 z-index:10;
 }
 
+
 #text{
 position:fixed;
-top:30px;
+top:20px;
 width:100%;
 text-align:center;
 color:white;
-font-size:24px;
-font-family:Arial;
+font-size:22px;
 font-weight:bold;
-z-index:20;
-background:rgba(0,0,0,0.4);
+background:rgba(0,0,0,0.5);
 padding:10px;
+z-index:20;
 }
+
 
 </style>
 
@@ -61,23 +66,81 @@ playsinline>
 </video>
 
 
-<img 
-id="shoe"
-src="shoe.png">
+<img id="shoe">
 
 
 <script>
 
+
+const params = new URLSearchParams(window.location.search);
+
+let shoe = params.get("shoe");
+
+
+let shoes = {
+
+
+"cyllia":
+"cyllia-sneakers.png",
+
+
+"aubree":
+"aubree-flats.png",
+
+
+"lacey":
+"lacey-sandals.png",
+
+
+"talulla":
+"talulla-sandals.png",
+
+
+"jovina":
+"jovina-heels.png",
+
+
+"shermaine":
+"shermaine-pumps.png",
+
+
+"brevia":
+"brevia-flats.png",
+
+
+"mona":
+"mona-loafers.png",
+
+
+"pearlyn":
+"pearlyn-mules.png"
+
+
+};
+
+
+document.getElementById("shoe").src =
+shoes[shoe] || "aubree-flats.png";
+
+
+
 navigator.mediaDevices.getUserMedia({
+
 video:true
+
 })
 
 .then(stream=>{
+
 document.getElementById("camera").srcObject=stream;
+
 })
 
-.catch(error=>{
-alert("Camera permission required");
+
+.catch(()=>{
+
+alert("Please allow camera access");
+
 });
 
 
@@ -85,5 +148,6 @@ alert("Camera permission required");
 
 
 </body>
+
 
 </html>
