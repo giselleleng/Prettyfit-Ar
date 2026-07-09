@@ -1,24 +1,50 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>PrettyFit AR Try On</title>
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: black;
-    }
+<title>PrettyFit AR Try-On</title>
 
-    #camera {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+<style>
 
-   #shoe {
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+
+/* Camera */
+#camera {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Header */
+#title {
+  position: fixed;
+  top: 5%;
+  width: 100%;
+
+  text-align: center;
+  color: white;
+
+  font-size: 40px;
+  font-weight: bold;
+
+  background: rgba(0,0,0,0.5);
+  padding: 25px 0;
+
+  z-index: 20;
+}
+
+
+/* Shoe AR Image */
+#shoe {
+
   position: fixed;
 
   width: 28.5vw;
@@ -29,62 +55,174 @@
   left: 50%;
 
   transform: translateX(-50%);
+
   z-index: 10;
+
 }
 
-    #text {
-      position: fixed;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px;
-      z-index: 20;
-    }
-  </style>
+
+/* Phone adjustment */
+@media (max-width: 600px) {
+
+  #shoe {
+
+    width: 38vw;
+    max-width: 240px;
+    min-width: 150px;
+
+    bottom: 3%;
+
+  }
+
+
+  #title {
+
+    font-size: 32px;
+    padding: 20px 0;
+
+  }
+
+}
+
+
+</style>
+
 </head>
+
 
 <body>
 
-  <div id="text">PrettyFit AR Try-On 👠</div>
 
-  <video id="camera" autoplay playsinline></video>
+<div id="title">
+PrettyFit AR Try-On 👠
+</div>
 
-  <img id="shoe" alt="PrettyFit Shoe">
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const selectedShoe = params.get("shoe");
+<video 
+id="camera" 
+autoplay 
+playsinline>
+</video>
 
-    const shoes = {
-      "aubree": "Aubree-Flats.png",
-      "brevia": "Brevia-Flats.png",
-      "cyllia": "Cyllia-Sneakers.png",
-      "jovina": "Jovina-Heels.png",
-      "lacey": "Lacey-Sandals.png",
-      "mona": "Mona-Loafers.png",
-      "pearlyn": "Pearlyn-Mules.png",
-      "shermaine": "Shermaine-Pumps.png",
-      "talulla": "Talulla-Sandals.png"
-    };
 
-    document.getElementById("shoe").src =
-      shoes[selectedShoe] || "Aubree-Flats.png";
+<img 
+id="shoe">
 
-    navigator.mediaDevices.getUserMedia({
-      video: true
-    })
-    .then(function(stream) {
-      document.getElementById("camera").srcObject = stream;
-    })
-    .catch(function(error) {
-      alert("Please allow camera access to use PrettyFit AR Try-On.");
-      console.log(error);
-    });
-  </script>
+
+<script>
+
+
+// Start camera
+
+navigator.mediaDevices.getUserMedia({
+
+video:{
+ facingMode:"environment"
+}
+
+})
+
+.then(stream => {
+
+document.getElementById("camera").srcObject = stream;
+
+})
+
+.catch(error => {
+
+alert("Camera permission needed");
+
+});
+
+
+
+
+// Prevent old image cache
+const refresh = new Date().getTime();
+
+
+// PrettyFit Shoes
+
+const shoes = {
+
+
+aubree:
+"Aubree-Flats.png",
+
+
+brevia:
+"Brevia-Flats.png",
+
+
+cyllia:
+"Cyllia-Sneakers.png",
+
+
+jovina:
+"Jovina-Heels.png",
+
+
+lacey:
+"Lacey-Sandals.png",
+
+
+mona:
+"Mona-Loafers.png",
+
+
+pearlyn:
+"Pearlyn-Mules.png",
+
+
+shermaine:
+"Shermaine-Pumps.png",
+
+
+talulla:
+"Talulla-Sandals.png"
+
+
+};
+
+
+
+// Read shoe from link
+
+const url =
+new URLSearchParams(window.location.search);
+
+
+const selected =
+url.get("shoe");
+
+
+// Show selected shoe
+
+if(selected && shoes[selected]){
+
+
+document.getElementById("shoe").src =
+shoes[selected] + "?update=" + refresh;
+
+
+}
+
+else{
+
+
+// default shoe
+document.getElementById("shoe").src =
+"Aubree-Flats.png?update=" + refresh;
+
+
+}
+
+
+
+</script>
+
 
 </body>
+
+
 </html>
